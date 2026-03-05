@@ -15,7 +15,7 @@ import com.mongodb.client.MongoCollection;
 
 import org.bson.Document;
 
-public class KafkaToMongoJob {
+public class DataStreamJob{
 
     public static void main(String[] args) throws Exception {
 
@@ -25,7 +25,7 @@ public class KafkaToMongoJob {
         // Kafka Source
         KafkaSource<String> source =
                 KafkaSource.<String>builder()
-                        .setBootstrapServers("localhost:9092")
+                        .setBootstrapServers("kafka-headless.kafka:9092")
                         .setTopics("test-topic")
                         .setGroupId("flink-consumer")
                         .setStartingOffsets(OffsetsInitializer.latest())
@@ -55,7 +55,7 @@ public class KafkaToMongoJob {
         @Override
         public void open(org.apache.flink.configuration.Configuration parameters) {
 
-            mongoClient = MongoClients.create("mongodb://localhost:27017");
+            mongoClient = MongoClients.create("mongodb://appuser:apppassword@mongo-mongodb.default:27017/datasink?authSource=admin");
 
             collection =
                     mongoClient
