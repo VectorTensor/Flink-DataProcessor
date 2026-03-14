@@ -23,6 +23,7 @@ public class DataStreamJob{
         String config_kafka = ConfigReader.get("CFG_KAFKA_DOMAIN");
         String config_mongo = ConfigReader.get("CFG_MONGO_URL");
 
+        System.out.printf("KAFKA : %s , MONGO_URL : %s", config_kafka, config_mongo);
         StreamExecutionEnvironment env =
                 StreamExecutionEnvironment.getExecutionEnvironment();
 
