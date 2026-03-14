@@ -34,4 +34,4 @@ jobs:
           JAR=$(ls target/*.jar | head -n 1)
           VERSION=${{ github.event.release.tag_name }}
 
-          aws s3 cp $JAR s3://${{ secrets.S3_BUCKET }}/flink-jobs/flinkjob-$VERSION/
+          aws s3 cp $JAR s3://${{ secrets.S3_BUCKET }}/flink-jobs/flinkjob-$VERSION
