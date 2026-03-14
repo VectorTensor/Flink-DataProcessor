@@ -55,7 +55,7 @@ public class DataStreamJob{
         @Override
         public void open(org.apache.flink.configuration.Configuration parameters) {
 
-            mongoClient = MongoClients.create("mongodb://appuser:apppassword@mongo-mongodb.default:27017/datasink?authSource=admin");
+            mongoClient = MongoClients.create("mongodb://root:mypassword@mongo-mongodb.default:27017");
 
             collection =
                     mongoClient
