@@ -1,5 +1,6 @@
 package com.example;
 
+import config.MongoUtils;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
@@ -24,20 +25,6 @@ import java.nio.charset.StandardCharsets;
 
 public class DataStreamJob{
 
-    public class MongoUtils {
-
-        public static String buildMongoUrl(String username, String password, String hostname) {
-            String authPart = "";
-
-            if (username != null && !username.isEmpty() && password != null) {
-                // Encode password safely
-                String encodedPassword = URLEncoder.encode(password, StandardCharsets.UTF_8);
-                authPart = String.format("%s:%s@", username, encodedPassword);
-            }
-
-            return String.format("mongodb://%s%s", authPart, hostname);
-        }
-    }
     public static void main(String[] args) throws Exception {
         // kafka-headless.kafka:9092
         String config_kafka = ConfigReader.get("CFG_KAFKA_DOMAIN");
