@@ -14,10 +14,14 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 
 import org.bson.Document;
+import config.ConfigReader;
 
 public class DataStreamJob{
 
     public static void main(String[] args) throws Exception {
+        // kafka-headless.kafka:9092
+        String config_kafka = ConfigReader.get("CFG_KAFKA_DOMAIN");
+        String config_mongo = ConfigReader.get("CFG_MONGO_URL");
 
         StreamExecutionEnvironment env =
                 StreamExecutionEnvironment.getExecutionEnvironment();
@@ -25,7 +29,7 @@ public class DataStreamJob{
         // Kafka Source
         KafkaSource<String> source =
                 KafkaSource.<String>builder()
-                        .setBootstrapServers("kafka-headless.kafka:9092")
+                        .setBootstrapServers(config_kafka)
                         .setTopics("test-topic")
                         .setGroupId("flink-consumer")
                         .setStartingOffsets(OffsetsInitializer.latest())
@@ -40,7 +44,7 @@ public class DataStreamJob{
                 );
 
         // Write to MongoDB
-        stream.addSink(new MongoSink());
+        stream.addSink(new MongoSink(config_mongo));
 
         env.execute("Kafka to MongoDB Flink Job");
     }
@@ -52,10 +56,21 @@ public class DataStreamJob{
         private transient MongoClient mongoClient;
         private transient MongoCollection<Document> collection;
 
+        private String MongoUrl;
+
+        public MongoSink(String url){
+
+            MongoUrl = url;
+
+
+
+        }
+//        mongodb://root:mypassword@mongo-mongodb.default:27017
+
         @Override
         public void open(org.apache.flink.configuration.Configuration parameters) {
 
-            mongoClient = MongoClients.create("mongodb://root:mypassword@mongo-mongodb.default:27017");
+            mongoClient = MongoClients.create(MongoUrl);
 
             collection =
                     mongoClient
