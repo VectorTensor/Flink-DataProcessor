@@ -37,12 +37,6 @@ public class DataStreamJob{
         System.out.printf("KAFKA : %s , MONGO_URL : %s", config_kafka, config_mongo);
         StreamExecutionEnvironment env =
                 StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setRestartStrategy(
-    RestartStrategies.fixedDelayRestart(
-        10,                  // number of restart attempts
-        Time.seconds(10)    // delay between restarts
-    )
-);
 
         // Kafka Source
         KafkaSource<String> source =
