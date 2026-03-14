@@ -1,0 +1,37 @@
+name: Build Flink Jar and Upload to S3
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    environment: production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build Flink JAR
+        run: mvn clean package -DskipTests
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload JAR to S3
+        run: |
+          JAR=$(ls target/*.jar | head -n 1)
+          VERSION=${{ github.event.release.tag_name }}
+
+          aws s3 cp $JAR s3://${{ secrets.S3_BUCKET }}/flink-jobs/flinkjob-$VERSION/

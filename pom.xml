@@ -22,7 +22,7 @@ under the License.
 
 	<groupId>com.example</groupId>
 	<artifactId>flink-kafka-mongo</artifactId>
-	<version>v2.1</version>
+	<version>v3.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Flink Quickstart Job</name>
