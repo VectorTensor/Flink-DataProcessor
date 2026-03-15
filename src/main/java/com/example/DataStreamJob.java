@@ -39,7 +39,6 @@ public class DataStreamJob{
 
 
         env.enableCheckpointing(10000);
-        env.getCheckpointConfig().setCheckpointStorage(s3_url);
 
         // Kafka Source
         KafkaSource<String> source =
