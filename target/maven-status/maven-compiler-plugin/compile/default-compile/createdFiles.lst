@@ -1,0 +1,4 @@
+com\example\DataStreamJob$MongoSink.class
+config\ConfigReader.class
+config\MongoUtils.class
+com\example\DataStreamJob.class
