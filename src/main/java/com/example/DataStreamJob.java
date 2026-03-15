@@ -29,12 +29,17 @@ public class DataStreamJob{
         String mongo_user = ConfigReader.get("CFG_MONGO_USER");
         String mongo_password = ConfigReader.get("CFG_MONGO_PASSWORD");
         String mongo_host = ConfigReader.get("CFG_MONGO_HOST");
+        String s3_url = ConfigReader.get("CFG_S3_URL");
 
         String config_mongo = MongoUtils.buildMongoUrl(mongo_user, mongo_password, mongo_host);
 
         LOG.info("KAFKA : {} , MONGO_URL : {}", config_kafka, config_mongo);
         StreamExecutionEnvironment env =
                 StreamExecutionEnvironment.getExecutionEnvironment();
+
+
+        env.enableCheckpointing(10000);
+        env.getCheckpointConfig().setCheckpointStorage(s3_url);
 
         // Kafka Source
         KafkaSource<String> source =
