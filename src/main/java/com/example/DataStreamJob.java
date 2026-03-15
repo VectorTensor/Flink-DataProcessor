@@ -16,11 +16,12 @@ import com.mongodb.client.MongoCollection;
 
 import org.bson.Document;
 import config.ConfigReader;
-
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class DataStreamJob{
+    private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
     public static void main(String[] args) throws Exception {
         // kafka-headless.kafka:9092
@@ -31,7 +32,7 @@ public class DataStreamJob{
 
         String config_mongo = MongoUtils.buildMongoUrl(mongo_user, mongo_password, mongo_host);
 
-        System.out.printf("KAFKA : %s , MONGO_URL : %s", config_kafka, config_mongo);
+        LOG.info("KAFKA : {} , MONGO_URL : {}", config_kafka, config_mongo);
         StreamExecutionEnvironment env =
                 StreamExecutionEnvironment.getExecutionEnvironment();
 
